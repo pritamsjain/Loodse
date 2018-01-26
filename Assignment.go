@@ -12,7 +12,7 @@ import (
 var (
 	master         = flag.String("master", "", "Master URL to build a client config from. Either this or kubeconfig needs to be set ")
 	kubeconfig     = flag.String("kubeconfig", "", "Absolute path to the kubeconfig file. Either this or master needs to be set ")
-	namespace      = flag.String("namespace", "default", "namespace from which you cant to list pods")
+	namespace      = flag.String("namespace", "default", "Namespace from which you Want to list pods")
 )
 func main() {
 	flag.Parse()
@@ -20,9 +20,9 @@ func main() {
 	// Create the client according to whether we are running in or out-of-cluster
 	outOfCluster := *master != "" || *kubeconfig != ""
 	var config *rest.Config
-	fmt.Println("Namespace ",*namespace)
+	/*fmt.Println("Namespace ",*namespace)
 	fmt.Println("Master ",*master)
-	fmt.Println("Kubeconfig ",*kubeconfig)
+	fmt.Println("Kubeconfig ",*kubeconfig)*/
 	var err error
 	if outOfCluster {
 		config, err = clientcmd.BuildConfigFromFlags(*master, *kubeconfig)
