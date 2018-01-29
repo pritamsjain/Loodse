@@ -33,21 +33,21 @@ func main() {
 	if err != nil {
 		fmt.Errorf("Failed to create config: %v", err)
 	}
+	config.Insecure =true
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		fmt.Errorf("Failed to create client: %v", err)
 	}
 	pods, err := clientset.CoreV1().Pods(*namespace).List(metav1.ListOptions{})
-	clientset.CoreV1().RESTClient().Get()
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err.Error())
 	}
 	if len(pods.Items) > 0 {
 		for _, pod := range pods.Items {
 			fmt.Printf("Pod %s\n", pod.GetName())
-			containers:=pod.Spec.Containers
-			fmt.Println("seq \t container name \t cpulimit \t cpurequest \t memorylimit \t memoryequest")
-			for i,c:= range containers{
+			fmt.Println("SR.NO \t container name \t cpulimit \t cpurequest \t memorylimit \t memoryequest")
+			//container wise resource info
+			for i,c:= range pod.Spec.Containers{
 				limit:=	c.Resources.Limits
 				req:=c.Resources.Requests
 				fmt.Println(i,"\t",c.Name,"\t",  limit[v1.ResourceCPU],"\t", req[v1.ResourceCPU],"\t", limit[v1.ResourceMemory] ,"\t",req[v1.ResourceMemory])
